@@ -1,0 +1,10 @@
+{
+  "name": "10genNodeMongo",
+  "description": "The 10gen course on Mongo with Node.js",
+  "author": "Sam D'Agostino <sdagostino@me.com>",
+  "dependencies": {
+    "express": ">= latest",
+    "mongodb": ">= latest",
+  },
+  "engine": "node 0.10.15"
+}

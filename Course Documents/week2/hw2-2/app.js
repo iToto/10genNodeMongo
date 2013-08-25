@@ -1,6 +1,6 @@
 var MongoClient = require('mongodb').MongoClient;
 
-MongoClient.connect('mongodb://localhost:27017/m101', function(err, db) {
+MongoClient.connect('mongodb://localhost:27017/weather', function(err, db) {
     if(err) throw err;
 
     var sort    = [["State",1],["Temperature",-1]];
@@ -10,7 +10,7 @@ MongoClient.connect('mongodb://localhost:27017/m101', function(err, db) {
         'sort'  : sort
     };
 
-    var weather = db.collection('hw2_1');
+    var weather = db.collection('data');
     var cursor  = weather.find(query,{},options);
 
     var currentState = "";
@@ -26,15 +26,21 @@ MongoClient.connect('mongodb://localhost:27017/m101', function(err, db) {
             return db.close();
         }
 
+        console.dir(doc);
         // Are we at a new state?
         if (currentState != doc.State) {
             currentState = doc.State;
-            console.dir(doc);
 
             // update this document with "month_high" : true
             query['_id']      = doc['_id'];
-            doc["month_high"] = true;
-            // db.collections('hw2_1').update();
+            doc['month_high'] = true;
+            weather.update(query,doc,function(err,updated){
+                if (err) throw err;
+
+                console.dir('Document '+doc['_id']+' updated!');
+                console.dir(doc);
+
+            });
         }
     });
     // return db.close();

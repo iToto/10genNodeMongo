@@ -30,7 +30,6 @@ function PostsDAO(db) {
 
         // now insert the post
         posts.save(post,{safe:true},function(err,data){
-            console.dir(data);
             callback(err,data);
         });
     }
@@ -84,7 +83,14 @@ function PostsDAO(db) {
         }
 
         // hw3.3 TODO
-        callback(Error("addComment NYI"), null);
+        posts.update({'permalink': permalink}, {$push:{"comments":comment}},function(err, result) {
+            "use strict";
+
+            if (err) return callback(err, null);
+
+            callback(err, result);
+        });
+        // callback(Error("addComment NYI"), null);
     }
 }
 

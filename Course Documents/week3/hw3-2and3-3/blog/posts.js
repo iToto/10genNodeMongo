@@ -29,8 +29,10 @@ function PostsDAO(db) {
                 "date": new Date()}
 
         // now insert the post
-        // hw3.2 TODO
-        callback(Error("insertEntry NYI"), null);
+        posts.save(post,{safe:true},function(err,data){
+            console.dir(data);
+            callback(err,data);
+        });
     }
 
     this.getPosts = function(num, callback) {

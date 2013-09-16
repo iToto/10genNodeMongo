@@ -1,0 +1,21 @@
+use postal
+db.zips.aggregate([
+    {$match:
+        {
+            state:{$in:["CA","NY"]}
+        }
+    },
+    {$group:
+        {
+            _id:{state:"$state",city:"$city"},
+            total_pop:{$sum:"$pop"}
+        }
+    },
+    {$match:{total_pop:{$gt:25000}}},
+    {$group:
+        {
+            _id:null,
+            avg_pop:{$avg:"$total_pop"}
+        }
+    }
+])

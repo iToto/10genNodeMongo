@@ -1,0 +1,25 @@
+use hw5
+db.grades.aggregate([
+    {$unwind:"$scores"},
+    {$match:{
+        'scores.type':{$in:["homework","exam"]}}
+    },
+    {$group:
+        {
+            _id:{
+                "class_id":"$class_id",
+                "student_id":"$student_id"
+            },
+            avg_grade:{$avg:"$scores.score"}
+        }
+    },
+    {$group:
+        {
+            _id:{
+                class_id:"$_id.class_id"
+            },
+            class_avg:{$avg:"$avg_grade"}
+        }
+    },
+    {$sort:{class_avg:1}}
+])
